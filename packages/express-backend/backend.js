@@ -48,6 +48,12 @@ const addUser = (user) => {
     return user;
 };
 
+const delUser = (user) => {
+    const index = users["users_list"].indexOf(user);
+    users["users_list"].splice(index, 1);
+    return user;
+};
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -80,6 +86,13 @@ app.post("/users", (req, res) => {
     addUser(userToAdd);
     res.send();
 });
+
+app.delete("/users", (req, res) => {
+    const userToDel = (req.body);
+    delUser(userToDel);
+    res.send();
+});
+
 
 app.listen(port, () => {
   console.log(
