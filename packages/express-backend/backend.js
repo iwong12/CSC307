@@ -61,6 +61,10 @@ const delUser = (user) => {
     return user;
 };
 
+const id_gen = () => {
+    return Math.floor(Math.random() * 10000);
+};
+
 app.use(cors());
 app.use(express.json());
 
@@ -102,9 +106,10 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
-    const userToAdd = (req.body);
+    const userToAdd = req.body;
+    userToAdd.id = id_gen();
     addUser(userToAdd);
-    res.send();
+    res.status(201).json(userToAdd);
 });
 
 app.delete("/users", (req, res) => {
