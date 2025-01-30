@@ -55,14 +55,9 @@ const addUser = (user) => {
     return user;
 };
 
-const delUser = (user) => {
-    const index = users["users_list"].indexOf(user);
-    users["users_list"].splice(index, 1);
-    return user;
-};
-
 const id_gen = () => {
-    return Math.floor(Math.random() * 10000);
+    const new_id = Math.floor(Math.random() * 10000);
+    return new_id.toString();
 };
 
 app.use(cors());
@@ -106,8 +101,10 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
-    const userToAdd = req.body;
-    userToAdd.id = id_gen();
+    const userToAdd = {
+        id: id_gen(),
+        ...req.body
+    };
     addUser(userToAdd);
     res.status(201).send(userToAdd);
 });
@@ -115,7 +112,6 @@ app.post("/users", (req, res) => {
 app.delete('/users/:id', (req, res) => {
     const userId = req.params.id; // Convert ID to number if needed
     const userIndex = users["users_list"].findIndex(user => user.id === userId);
-    console.log(userIndex);
 
     if (userIndex !== -1) {
         users["users_list"].splice(userIndex, 1); // Remove user

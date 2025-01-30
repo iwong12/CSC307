@@ -5,6 +5,7 @@ function TableHeader() {
             <tr>
                 <th>Name</th>
                 <th>Job</th>
+                <th>ID</th>
                 <th>Remove</th>
             </tr>
         </thead>
@@ -16,6 +17,7 @@ function TableBody(props) {
             <tr key={row.id || Math.random()}>
                 <td>{row.name}</td>
                 <td>{row.job}</td>
+                <td>{row.id}</td>
                 <td>
                     <button onClick={() => props.removeOneCharacter(row.id)}>
                         Delete

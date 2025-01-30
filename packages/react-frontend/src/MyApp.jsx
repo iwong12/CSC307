@@ -50,10 +50,12 @@ function MyApp() {
             .then((res) => {
                 if (res.status === 201) {
                     return res.json();
+                } else {
+                    throw new Error("Failed to add user");
                 }
-                throw new Error("Failed to add user");
             })
-            .then(() => {
+            .then((person) => {
+                console.log(person);
                 setCharacters([...characters, person]);
             })
             .catch((error) => {
