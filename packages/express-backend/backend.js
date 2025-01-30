@@ -109,14 +109,22 @@ app.post("/users", (req, res) => {
     const userToAdd = req.body;
     userToAdd.id = id_gen();
     addUser(userToAdd);
-    res.status(201).json(userToAdd);
+    res.status(201).send(userToAdd);
 });
 
-app.delete("/users", (req, res) => {
-    const userToDel = (req.body);
-    delUser(userToDel);
-    res.send();
+app.delete('/users/:id', (req, res) => {
+    const userId = req.params.id; // Convert ID to number if needed
+    const userIndex = users["users_list"].findIndex(user => user.id === userId);
+    console.log(userIndex);
+
+    if (userIndex !== -1) {
+        users["users_list"].splice(userIndex, 1); // Remove user
+        res.status(204).send();
+    } else {
+        res.status(404).send();
+    }
 });
+
 
 
 app.listen(port, () => {
