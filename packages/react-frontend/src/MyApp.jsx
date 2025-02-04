@@ -4,13 +4,13 @@ import Table from "./Table";
 import Form from "./Form";
 
 function MyApp() {
-    const [characters, setCharacters] = useState([]);
+    const [characters = [], setCharacters] = useState([]);
 
     function removeOneCharacter(id) {
         delUser(id)
             .then((res) => {
                 if (res.status === 204) {
-                    setCharacters(characters.filter((character) => character.id !== id));
+                    setCharacters(characters.filter((character) => character._id !== id));
                 } else {
                     throw new Error("Failed to delete user");
                 }
@@ -66,7 +66,10 @@ function MyApp() {
     useEffect(() => {
         fetchUsers()
             .then((res) => res.json())
-            .then((json) => setCharacters(json["users_list"]))
+            .then((json) => {
+                console.log(json);
+                setCharacters(json.map(user => ({ ...user, id: user._id })) || []);
+            })
             .catch((error) => {
                 console.log(error);
             });

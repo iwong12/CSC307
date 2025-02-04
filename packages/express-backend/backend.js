@@ -43,11 +43,6 @@ const addUser = (user) => {
     return services.default.addUser(user);
 };
 
-const id_gen = () => {
-    const new_id = Math.floor(Math.random() * 10000);
-    return new_id.toString();
-};
-
 const delUserById = (id) => {
     return services.default.delUserById(id);
 }
@@ -99,14 +94,11 @@ app.get("/users/:id", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
-    const userToAdd = {
-        id: id_gen(),
-        ...req.body
-    };
+    const userToAdd = req.body;
     addUser(userToAdd)
         .then((result) => {
             if (result) {
-                res.status(201).send(userToAdd);
+                res.status(201).send({ ...userToAdd, _id: result._id });
             } else {
                 res.status(400).send('Error adding user');
             }
@@ -118,16 +110,9 @@ app.post("/users", (req, res) => {
 
 app.delete('/users/:id', (req, res) => {
     const userId = req.params.id; // Convert ID to number if needed
-    //const userIndex = users["users_list"].findIndex(user => user.id === userId);
+    console.log(userId);
 
-    //if (userIndex !== -1) {
-    //    users["users_list"].splice(userIndex, 1); // Remove user
-    //    res.status(204).send();
-    //} else {
-    //    res.status(404).send();
-    //}
-
-    delUserById(id)
+    delUserById(userId)
         .then((result) => {
             if (result) {
                 res.status(204).send();
